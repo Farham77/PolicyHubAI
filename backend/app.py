@@ -31,9 +31,9 @@ def split_documents(doc)->list:
 
 #map the chunks against list of numbers vectors -> embeddings
 # vectors are stored in vectordatabase
-def create_vectorstore(chunks):
+def load_vectorstore(chunks):
   embeddings = HuggingFaceEmbeddings(model_name ="all-MiniLM-L6-v2")
-  vectorstore = Chroma.from_documents(chunks,embeddings,persist_directory="db")
+  vectorstore = Chroma(persist_directory="db", embedding_function=embeddings)
   return vectorstore
 
 #gives top 3 chunk with the most simiarilty in user prompt
@@ -80,7 +80,7 @@ class Question(BaseModel): # making class of Question with string data member
 #Callin functions
 doc = load_documents() # loading documents
 chnks = split_documents(doc) #chunking documents
-vctrs = create_vectorstore(chnks) # mapping chnks against vectors
+vctrs = load_vectorstore(chnks) # mapping chnks against vectors
 retriever = get_retriever(vctrs) # retrieving required chunks that match the prompt
 llm = get_llm() # creating llm obj
 chain = create_chain(llm,retriever) #chainig prompt with top 3 vectors(chunks) retrieved
