@@ -6,7 +6,8 @@ langchain-text-splitters
 langchain-core
 langchain-huggingface
 langchain-groq
-chromadb
 sentence-transformers
 python-dotenv
 pydantic
+pinecone
+langchain-pinecone
